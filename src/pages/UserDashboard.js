@@ -5,7 +5,8 @@ import Sidebar from "../components/Sidebar";
 import { WebinarContext } from "../context/WebinarContext";
 
 const UserDashboard = () => {
-  const { webinars, registerUser } = useContext(WebinarContext);
+  const { webinars, registerUser, unregisterUser } =
+    useContext(WebinarContext);
 
   const [selectedId, setSelectedId] = useState(null);
   const [name, setName] = useState("");
@@ -15,8 +16,12 @@ const UserDashboard = () => {
 
     registerUser(selectedId, name);
     toast.success("Successfully Registered!");
-    setName("");
     setSelectedId(null);
+  };
+
+  const handleUnregister = (webinarId) => {
+    unregisterUser(webinarId, name);
+    toast.success("Unregistered Successfully");
   };
 
   return (
@@ -28,10 +33,11 @@ const UserDashboard = () => {
           User Dashboard
         </h1>
 
-        {webinars.length === 0 ? (
-          <p>No webinars available.</p>
-        ) : (
-          webinars.map((webinar) => (
+        {webinars.map((webinar) => {
+          const isRegistered =
+            webinar.registrations.includes(name);
+
+          return (
             <motion.div
               key={webinar.id}
               whileHover={{ scale: 1.02 }}
@@ -40,75 +46,101 @@ const UserDashboard = () => {
               <h2 className="text-xl font-bold">
                 {webinar.title}
               </h2>
-
               <p className="text-gray-600">
                 Date: {webinar.date}
               </p>
 
-              <button
-                onClick={() => setSelectedId(webinar.id)}
-                className="mt-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg shadow hover:scale-105 transition"
-              >
-                Register
-              </button>
-
+              {/* Registration Section */}
               <div className="mt-3">
-                <a
-                  href={webinar.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-blue-600 font-medium"
-                >
-                  Join Live
-                </a>
+                {isRegistered ? (
+                  <div className="flex gap-3 items-center">
+                    <span className="text-green-600 font-semibold">
+                      Registered ✔
+                    </span>
+
+                    <button
+                      onClick={() =>
+                        handleUnregister(webinar.id)
+                      }
+                      className="bg-red-600 text-white px-4 py-1 rounded"
+                    >
+                      Unregister
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() =>
+                      setSelectedId(webinar.id)
+                    }
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg"
+                  >
+                    Register
+                  </button>
+                )}
               </div>
 
-              {/* Multiple Resources Display */}
-              {Array.isArray(webinar.resource) &&
-                webinar.resource.length > 0 && (
-                  <div className="mt-3">
-                    <p className="font-semibold mb-1">
-                      Resources:
-                    </p>
-                    {webinar.resource.map((res, index) => (
-                      <a
-                        key={index}
-                        href={res}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="block text-green-600 hover:underline"
-                      >
-                        📂 Resource {index + 1}
-                      </a>
-                    ))}
-                  </div>
-                )}
+              {/* Join Link */}
+              {webinar.isLive && (
+                <div className="mt-3">
+                  <a
+                    href={webinar.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-blue-600 font-medium"
+                  >
+                    Join Live
+                  </a>
+                </div>
+              )}
+
+              {webinar.isClosed && (
+                <p className="mt-3 text-red-600 font-semibold">
+                  Webinar Closed
+                </p>
+              )}
+
+              {/* Resources */}
+              {webinar.resource.length > 0 && (
+                <div className="mt-3">
+                  {webinar.resource.map((res, index) => (
+                    <a
+                      key={index}
+                      href={res}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="block text-green-600"
+                    >
+                      Resource {index + 1}
+                    </a>
+                  ))}
+                </div>
+              )}
             </motion.div>
-          ))
-        )}
+          );
+        })}
 
         {/* Modal */}
         {selectedId && (
           <div className="fixed inset-0 flex items-center justify-center bg-black/40">
-            <motion.div
-              initial={{ scale: 0.8 }}
-              animate={{ scale: 1 }}
-              className="bg-white p-8 rounded-2xl shadow-xl w-96"
-            >
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-96">
               <h2 className="text-xl font-bold mb-4">
                 Enter Your Name
               </h2>
 
               <input
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) =>
+                  setName(e.target.value)
+                }
                 className="w-full border p-2 rounded mb-4"
                 placeholder="Your Name"
               />
 
               <div className="flex justify-end gap-3">
                 <button
-                  onClick={() => setSelectedId(null)}
+                  onClick={() =>
+                    setSelectedId(null)
+                  }
                   className="px-4 py-2 bg-gray-300 rounded"
                 >
                   Cancel
@@ -121,7 +153,7 @@ const UserDashboard = () => {
                   Submit
                 </button>
               </div>
-            </motion.div>
+            </div>
           </div>
         )}
       </div>

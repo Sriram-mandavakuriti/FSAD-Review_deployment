@@ -12,6 +12,7 @@ export const WebinarProvider = ({ children }) => {
     localStorage.setItem("webinars", JSON.stringify(webinars));
   }, [webinars]);
 
+  // ✅ Add Webinar
   const addWebinar = (webinar) => {
     setWebinars((prev) => [
       ...prev,
@@ -20,23 +21,47 @@ export const WebinarProvider = ({ children }) => {
         registrations: [],
         resource: [],
         isLive: false,
+        isClosed: false,
       },
     ]);
   };
 
+  // ✅ Register User (Prevent Duplicate)
   const registerUser = (webinarId, userName) => {
+    setWebinars((prev) =>
+      prev.map((w) => {
+        if (w.id !== webinarId) return w;
+
+        // Prevent duplicate registration
+        if (w.registrations.includes(userName)) {
+          return w;
+        }
+
+        return {
+          ...w,
+          registrations: [...w.registrations, userName],
+        };
+      })
+    );
+  };
+
+  // ✅ Unregister User
+  const unregisterUser = (webinarId, userName) => {
     setWebinars((prev) =>
       prev.map((w) =>
         w.id === webinarId
           ? {
               ...w,
-              registrations: [...(w.registrations || []), userName],
+              registrations: w.registrations.filter(
+                (name) => name !== userName
+              ),
             }
           : w
       )
     );
   };
 
+  // ✅ Add Resource (Max 3)
   const addResource = (webinarId, link) => {
     setWebinars((prev) =>
       prev.map((w) => {
@@ -51,6 +76,7 @@ export const WebinarProvider = ({ children }) => {
     );
   };
 
+  // ✅ Delete Resource
   const deleteResource = (webinarId, index) => {
     setWebinars((prev) =>
       prev.map((w) =>
@@ -64,18 +90,26 @@ export const WebinarProvider = ({ children }) => {
     );
   };
 
+  // ✅ Toggle Live
   const toggleLive = (webinarId) => {
     setWebinars((prev) =>
       prev.map((w) =>
         w.id === webinarId
-          ? { ...w, isLive: !w.isLive }
+          ? {
+              ...w,
+              isLive: !w.isLive,
+              isClosed: w.isLive ? true : false,
+            }
           : w
       )
     );
   };
 
+  // ✅ Delete Webinar
   const deleteWebinar = (id) => {
-    setWebinars((prev) => prev.filter((w) => w.id !== id));
+    setWebinars((prev) =>
+      prev.filter((w) => w.id !== id)
+    );
   };
 
   return (
@@ -84,6 +118,7 @@ export const WebinarProvider = ({ children }) => {
         webinars,
         addWebinar,
         registerUser,
+        unregisterUser,
         addResource,
         deleteResource,
         toggleLive,
