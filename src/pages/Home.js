@@ -1,3 +1,4 @@
+import logo from "../assets/logo.png";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
@@ -24,9 +25,16 @@ const Home = () => {
       {/* ===== Navbar ===== */}
       <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-black/60 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-black dark:text-white">
-            WebEdu
-          </h1>
+          <div className="flex items-center gap-3">
+  <img
+    src={logo}
+    alt="WebEdu Logo"
+    className="h-16 w-auto object-contain"
+  />
+  <span className="text-2xl font-bold text-black dark:text-white">
+    WebEdu
+  </span>
+</div>
 
           <div className="flex gap-8 items-center text-sm font-medium">
             <a href="#hero">Home</a>
@@ -75,7 +83,7 @@ const Home = () => {
 
         <p className="mt-6 text-xl md:text-2xl max-w-3xl text-white/90">
           [ Elevate your learning experience with interactive webinars,
-          analytics ] dashboards, and structured resources."
+          analytics ] dashboards, and structured resources
         </p>
 
         <div className="mt-10 flex gap-6">
