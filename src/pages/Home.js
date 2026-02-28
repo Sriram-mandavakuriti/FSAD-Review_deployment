@@ -6,168 +6,200 @@ const Home = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    darkMode
+      ? document.documentElement.classList.add("dark")
+      : document.documentElement.classList.remove("dark");
   }, [darkMode]);
 
   return (
-    <div className="relative min-h-screen bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 overflow-x-hidden">
+    <div className="relative min-h-screen font-sans text-gray-900 dark:text-gray-200 overflow-x-hidden">
 
-      {/* 🌙 Dark Mode Toggle */}
-      <div className="fixed top-6 right-6 z-50">
-        <button
-          onClick={() => setDarkMode(!darkMode)}
-          className="px-4 py-2 rounded-xl bg-gray-200 dark:bg-gray-800 shadow-lg border border-gray-300 dark:border-gray-700"
-        >
-          {darkMode ? "☀ Light" : "🌙 Dark"}
-        </button>
-      </div>
+      {/* ===== Animated Background ===== */}
+      <motion.div
+        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+        className="fixed inset-0 -z-20 bg-gradient-to-br from-blue-500 via-indigo-600 to-cyan-500 dark:from-slate-900 dark:via-black dark:to-slate-950 bg-[length:300%_300%]"
+      />
 
-      {/* 🌈 Floating Animated Background */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+      {/* ===== Navbar ===== */}
+      <nav className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 dark:bg-black/60 border-b border-gray-200 dark:border-gray-700">
+        <div className="max-w-7xl mx-auto px-8 py-4 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-black dark:text-white">
+            WebEdu
+          </h1>
 
-        <motion.div
-          animate={{ x: [0, 100, -100, 0], y: [0, -50, 50, 0] }}
-          transition={{ repeat: Infinity, duration: 20 }}
-          className="absolute top-20 left-20 w-72 h-72 bg-purple-500 opacity-20 rounded-full blur-3xl"
-        />
+          <div className="flex gap-8 items-center text-sm font-medium">
+            <a href="#hero">Home</a>
+            <a href="#about">What is WebEdu</a>
+            <a href="#how">How It Works</a>
+            <a href="#features">Features</a>
+            <a href="#cta">Start</a>
 
-        <motion.div
-          animate={{ x: [0, -150, 150, 0], y: [0, 100, -100, 0] }}
-          transition={{ repeat: Infinity, duration: 25 }}
-          className="absolute bottom-20 right-20 w-80 h-80 bg-blue-500 opacity-20 rounded-full blur-3xl"
-        />
+            <Link
+              to="/login"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              Login
+            </Link>
 
-        <motion.div
-          animate={{ x: [0, 120, -120, 0], y: [0, 80, -80, 0] }}
-          transition={{ repeat: Infinity, duration: 30 }}
-          className="absolute top-1/3 right-1/4 w-60 h-60 bg-pink-500 opacity-20 rounded-full blur-3xl"
-        />
-      </div>
+            <Link
+              to="/register"
+              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              Register
+            </Link>
 
-      {/* 🚀 HERO SECTION (Full Screen) */}
-      <section className="min-h-screen flex flex-col justify-center items-center text-center px-6 border-b border-gray-200 dark:border-gray-800">
+            <button
+              onClick={() => setDarkMode(!darkMode)}
+              className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700"
+            >
+              {darkMode ? "☀" : "🌙"}
+            </button>
+          </div>
+        </div>
+      </nav>
 
-        {/* Big Branding */}
+      {/* ===== HERO ===== */}
+      <section
+        id="hero"
+        className="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-28 text-white"
+      >
         <motion.h1
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
-          className="text-7xl md:text-8xl font-extrabold bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-6xl md:text-7xl font-extrabold"
         >
           WebEdu
         </motion.h1>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 1 }}
-          className="mt-8 text-3xl md:text-4xl font-semibold"
-        >
-          Elevate Your Learning Experience
-        </motion.h2>
-
-        <p className="mt-6 text-gray-600 dark:text-gray-300 text-lg max-w-2xl">
-          WebEdu empowers educators and learners with interactive webinars,
-          analytics dashboards, and structured resource management.
+        <p className="mt-6 text-xl md:text-2xl max-w-3xl text-white/90">
+          [ Elevate your learning experience with interactive webinars,
+          analytics ] dashboards, and structured resources."
         </p>
 
         <div className="mt-10 flex gap-6">
           <Link
             to="/login"
-            className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl shadow-lg hover:scale-110 transition"
+            className="px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:scale-105 transition"
           >
             Login
           </Link>
 
           <Link
             to="/register"
-            className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl shadow-lg hover:scale-110 transition"
+            className="px-8 py-3 bg-white text-blue-600 font-semibold rounded-lg hover:scale-105 transition"
           >
             Register
           </Link>
         </div>
-
       </section>
 
-      {/* 💎 FEATURES */}
-      <section className="py-24 px-10 text-center border-b border-gray-200 dark:border-gray-800">
-        <h2 className="text-4xl font-bold mb-4">Premium Features</h2>
-        <p className="text-gray-500 dark:text-gray-400 mb-16">
-          Everything you need to run modern webinars.
-        </p>
-
-        <div className="grid md:grid-cols-3 gap-10">
-
-          {[
-            { icon: "🎥", title: "Live Sessions", desc: "Conduct real-time webinars with interaction tools." },
-            { icon: "📊", title: "Analytics Dashboard", desc: "Track performance and engagement metrics easily." },
-            { icon: "📚", title: "Resource Management", desc: "Upload and manage webinar materials efficiently." }
-          ].map((feature, index) => (
-            <motion.div
-              key={index}
-              whileHover={{ scale: 1.05 }}
-              className="p-10 rounded-3xl shadow-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 transition"
-            >
-              <div className="text-5xl mb-5">{feature.icon}</div>
-              <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400">{feature.desc}</p>
-            </motion.div>
-          ))}
-
+      {/* ===== WHAT IS WEBEDU ===== */}
+      <section
+        id="about"
+        className="py-24 px-10 text-center bg-white dark:bg-slate-900"
+      >
+        <div className="max-w-4xl mx-auto border-2 border-blue-500 rounded-3xl p-12 shadow-lg">
+          <h2 className="text-4xl font-bold mb-8">What is WebEdu?</h2>
+          <p className="text-lg leading-relaxed italic">
+            “WebEdu is a modern online learning platform designed to make webinars simple, interactive, and impactful. It allows educators to host live sessions, share resources, and track participant progress — all in one place. Whether it’s a training program, workshop, or academic lecture, 
+            WebEdu helps deliver structured and engaging learning experiences with ease.”
+          </p>
         </div>
       </section>
 
-      {/* 🛠 HOW IT WORKS */}
-      <section className="py-24 bg-gray-50 dark:bg-gray-800 text-center border-b border-gray-200 dark:border-gray-700">
+      {/* ===== HOW IT WORKS ===== */}
+      <section id="how" className="py-24 px-10 text-center bg-gray-100 dark:bg-slate-800">
         <h2 className="text-4xl font-bold mb-16">How It Works</h2>
 
-        <div className="grid md:grid-cols-3 gap-10 px-10">
-
+        <div className="grid md:grid-cols-3 gap-10">
           {[
-            { step: "1️⃣", title: "Register", desc: "Create your account in seconds." },
-            { step: "2️⃣", title: "Join Webinar", desc: "Enroll and attend live sessions." },
-            { step: "3️⃣", title: "Track Progress", desc: "Monitor your learning journey." }
+            { number: "1", title: "Register", desc: "Create your account in seconds." },
+            { number: "2", title: "Join Webinar", desc: "Enroll and attend live sessions." },
+            { number: "3", title: "Track Progress", desc: "Monitor your learning journey." },
           ].map((item, index) => (
             <motion.div
               key={index}
               whileInView={{ opacity: [0, 1], y: [40, 0] }}
               transition={{ duration: 0.6 }}
-              className="p-8 bg-white dark:bg-black rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700"
+              viewport={{ once: true }}
+              className="bg-white dark:bg-slate-900 rounded-2xl shadow-md p-12 relative"
             >
-              <div className="text-4xl mb-4">{item.step}</div>
-              <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400">{item.desc}</p>
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-blue-600 text-white w-10 h-10 rounded-md flex items-center justify-center font-bold shadow">
+                {item.number}
+              </div>
+
+              <h3 className="mt-6 text-xl font-bold">{item.title}</h3>
+              <p className="mt-4 text-gray-600 dark:text-gray-400">
+                {item.desc}
+              </p>
             </motion.div>
           ))}
-
         </div>
       </section>
 
-      {/* 🚀 CTA */}
-      <section className="py-24 bg-gradient-to-r from-blue-600 to-purple-700 text-white text-center border-b border-gray-300 dark:border-gray-700">
-        <h2 className="text-4xl font-bold mb-6">
-          Start Your Learning Journey Today 🚀
+      {/* ===== PREMIUM FEATURES ===== */}
+      <section id="features" className="py-24 px-10 text-center bg-white dark:bg-slate-900">
+        <h2 className="text-4xl font-bold mb-4">Premium Features</h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-16">
+          Everything you need to run modern webinars.
+        </p>
+
+        <div className="grid md:grid-cols-3 gap-10">
+          {[
+            { icon: "🎥", title: "Live Sessions", desc: "Conduct real-time webinars with interaction tools." },
+            { icon: "📊", title: "Analytics Dashboard", desc: "Track performance and engagement metrics easily." },
+            { icon: "📚", title: "Resource Management", desc: "Upload and manage webinar materials efficiently." },
+          ].map((feature, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ scale: 1.05 }}
+              className="bg-gray-50 dark:bg-slate-800 rounded-2xl shadow-md p-12"
+            >
+              <div className="text-4xl mb-6">{feature.icon}</div>
+              <h3 className="text-xl font-bold">{feature.title}</h3>
+              <p className="mt-4 text-gray-600 dark:text-gray-400">
+                {feature.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* 🔁 SCROLLING TEXT */}
+      <div className="overflow-hidden whitespace-nowrap py-6 bg-black text-white text-lg font-semibold">
+        <motion.div
+          animate={{ x: ["100%", "-100%"] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="inline-block"
+        >
+          " WebEdu — Empowering Education Through Technology — Interactive Webinars — Real-time Analytics — Modern Learning Platform "
+        </motion.div>
+      </div>
+
+      {/* ===== CTA ===== */}
+      <section
+        id="cta"
+        className="py-20 text-center text-white bg-gradient-to-r from-blue-600 to-indigo-600"
+      >
+        <h2 className="text-4xl font-bold mb-8">
+          "Start Your Learning Journey Today"
         </h2>
+
         <Link
           to="/register"
-          className="px-10 py-4 bg-white text-black rounded-xl font-bold hover:scale-110 transition shadow-lg"
+          className="px-10 py-4 bg-white text-blue-600 font-semibold rounded-xl shadow hover:scale-105 transition"
         >
           Get Started
         </Link>
       </section>
 
-      {/* 🏁 FOOTER */}
-      <footer className="py-10 bg-gray-900 text-gray-400 text-center">
-        <p>© 2026 WebEdu. All rights reserved.</p>
-        <p className="mt-2 text-sm">
-          Empowering education through technology.
-        </p>
-      </footer>
 
+      {/* ===== FOOTER ===== */}
+      <footer className="py-12 bg-black text-gray-400 text-center">
+        © 2026 WebEdu. All rights reserved.
+      </footer>
     </div>
   );
 };
