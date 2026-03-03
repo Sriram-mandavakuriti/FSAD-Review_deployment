@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
+import { Home } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -8,6 +9,20 @@ const Login = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-black overflow-hidden">
+
+      {/* 🔥 Premium Home Icon Button */}
+      <Link
+        to="/"
+        className="absolute top-6 left-6 z-50 group"
+      >
+        <div className="p-3 rounded-2xl bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg 
+                        hover:shadow-blue-500/50 hover:scale-110 transition duration-300">
+          <Home
+            size={22}
+            className="text-white group-hover:text-blue-400 transition"
+          />
+        </div>
+      </Link>
 
       {/* 🔥 Animated Background */}
       <div className="absolute inset-0 -z-10">
@@ -25,7 +40,7 @@ const Login = () => {
 
       <div className="flex w-full max-w-6xl shadow-2xl rounded-3xl overflow-hidden">
 
-        {/* 🎨 LEFT SIDE IMAGE / INFO */}
+        {/* 🎨 LEFT SIDE */}
         <div className="hidden md:flex flex-col justify-center items-center bg-gradient-to-br from-purple-600 to-indigo-700 text-white p-12 w-1/2">
           <motion.h2
             initial={{ opacity: 0, x: -50 }}
@@ -70,7 +85,6 @@ const Login = () => {
             className="w-full p-3 mb-6 rounded-xl bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
 
-          {/* Role Selector */}
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
